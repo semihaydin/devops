@@ -1,0 +1,17 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+   curl -u "$NETSPARKERUSERID:$NETSPARKERAPITOKEN" -X POST https://stage-aws.netsparkercloud.com/api/1.0/scans/CreateFromPluginScanRequest -H "Content-Type: application/json" -d "{ WebsiteId: '8bc675d0-5757-4e88-7765-a7ca01b15cc8', 'ScanType': 'FullWithPrimaryProfile', 'VcsCommitInfoModel': { 'CiBuildConfigurationName' : '$BUILD_DEFINITIONNAME', 'CiBuildHasChange': '$BUILD_SOURCEVERSION', 'CiBuildId': '$BUILD_BUILDID', 'CiBuildUrl': '$RELEASE_RELEASEWEBURL', 'Committer': '$BUILD_REQUESTEDFOREMAIL', 'IntegrationSystem': 'AzureDevOps', 'VcsName': '$BUILD_REPOSITORY_PROVIDER', 'VcsVersion': '$BUILD_SOURCEVERSION' }}"
